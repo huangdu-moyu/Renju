@@ -6,7 +6,7 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QMessageBox>
-#include "game.h"
+#include "gamestate.h"
 
 namespace Ui {
 class GameWindow;
@@ -17,7 +17,7 @@ class GameWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameWindow(QWidget *parent = 0);
+    explicit GameWindow(QWidget *parent = nullptr);
     ~GameWindow();
 
 protected:
@@ -26,7 +26,7 @@ protected:
 
 private:
     Ui::GameWindow *ui;
-    Game* game=new Game;
+    GameState* game=new GameState;
 };
 
 #endif // GAMEWINDOW_H

@@ -46,6 +46,21 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
+   <property name="segmentStyle">
+    <enum>QLCDNumber::Filled</enum>
+   </property>
+   <property name="value" stdset="0">
+    <double>60.000000000000000</double>
+   </property>
+   <property name="intValue" stdset="0">
+    <number>60</number>
+   </property>
   </widget>
  </widget>
  <resources/>

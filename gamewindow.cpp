@@ -1,6 +1,7 @@
 #include "gamewindow.h"
-#include "game.h"
+#include "gamestate.h"
 #include "ui_gamewindow.h"
+#include "solver.h"
 #include <QDebug>
 
 GameWindow::GameWindow(QWidget *parent) :
@@ -53,7 +54,7 @@ void GameWindow::paintEvent(QPaintEvent*)
         for(int j=0;j<15;j++)
         {
             int t=game->queryBoard(i,j);
-            if(t)
+            if(t!=-1)
             {
                 brush.setColor((t==1?(Qt::black):(Qt::white)));
                 p.setBrush(brush);
@@ -72,18 +73,31 @@ void GameWindow::mouseReleaseEvent(QMouseEvent* e)
     {
         return;
     }
-    if(!game->queryBoard(x,y))
+    if(game->queryBoard(x,y)==-1)
     {
-        //qDebug()<<x<<" "<<y<<endl;
         game->checkAndMove(x,y);
-        //qDebug()<<game->queryBoard(x,y)<<endl;
         update();
         if(game->isWin(x,y))
         {
             QMessageBox::information(this,"You win","You win!",QMessageBox::Ok);
-            game->init();
+            game->clear();
             update();
         }
+
+        Solver* s=new Solver(game);
+        //qDebug()<<s->st->queryBoard(x,y);
+        //qDebug()<<GameState::zobristBoard[255][0]<<endl;
+        int u=s->getNextMove();
+        //qDebug()<<"nextMove:"<<(u-17)/16<<" "<<(u-17)%16;
+        game->checkAndMove(u);
+        if(game->isWin(u))
+        {
+            QMessageBox::information(this,"You lose","You lose!",QMessageBox::Ok);
+            game->clear();
+            update();
+        }
+        update();
+        delete s;
     }
 }
 
