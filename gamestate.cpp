@@ -212,7 +212,7 @@ int GameState::scorePoint(int u,int p)
     int res=0;
     for(int i=0;i<4;i++)
     {
-        int count=1,block=0,empty=-1,secondCount=0;
+        int count=1,block=0,empty=-1;
         for(int t=u+dir[i];true;t+=dir[i])
         {
             if(board[t]==INF)
@@ -372,7 +372,7 @@ bool GameState::remove(int t)
     if(board[t]!=-1)
     {
         removeStone(t);
-
+        player^=1;
         moves.pop_back();
         return true;
     }

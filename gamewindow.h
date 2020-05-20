@@ -27,7 +27,7 @@ private slots:
 
     void on_Undo_clicked();
 public:
-    explicit GameWindow(QWidget *parent = nullptr);
+    explicit GameWindow(bool ai,QWidget *parent = nullptr);
     ~GameWindow();
 
 protected:
@@ -36,6 +36,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* e);
 
 private:
+    bool ai;
     Ui::GameWindow *ui;
     GameState* game=new GameState;
     QTime timeSet;

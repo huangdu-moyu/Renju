@@ -18,13 +18,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     this->close();
-    GameWindow* GW=new GameWindow;
+    GameWindow* GW=new GameWindow(true);
     GW->show();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
     this->close();
-    GameWindow* GW=new GameWindow;
+    GameWindow* GW=new GameWindow(false);
     GW->show();
 }

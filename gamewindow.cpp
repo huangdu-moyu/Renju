@@ -4,8 +4,9 @@
 #include "ui_gamewindow.h"
 #include "solver.h"
 #include <QDebug>
+#include <QString>
 #include <QTimerEvent>
-GameWindow::GameWindow(QWidget *parent) : QWidget(parent),
+GameWindow::GameWindow(bool ai,QWidget *parent) : ai(ai),QWidget(parent),
                                           ui(new Ui::GameWindow)
 {
     //this->setFixedSize(940,640);
@@ -88,7 +89,7 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
         repaint();
         if (game->isWin(x, y))
         {
-            QMessageBox::information(this, "You win", "You win!", QMessageBox::Ok);
+            QMessageBox::information(this, "You win", QString(game->queryPlayer()?"白":"黑")+"胜!", QMessageBox::Ok);
             game->clear();
             isblack=1;
             total_second=0;
@@ -115,40 +116,43 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
 
             isblack = !isblack;
         }
-        s.set(game);
-        //qDebug()<<s->st->queryBoard(x,y);
-        //qDebug()<<GameState::zobristBoard[255][0]<<endl;
-        int u = s.getNextMove();
-        //qDebug()<<"nextMove:"<<(u-17)/16<<" "<<(u-17)%16;
-        game->checkAndMove(u);
-        if (game->isWin(u))
+        if(ai)
         {
-            QMessageBox::information(this, "You lose", "You lose!", QMessageBox::Ok);
-            game->clear();
-            isblack=1;
-            total_second=0;
-        }
-        else
-        {
-
-            killTimer(timerId); //关闭计时器
-
-            //重置显示屏
-            setSecond = const_second;   //储存设置的时间
-
-            timeSet.setHMS(setSecond / 3600, (setSecond - setSecond / 3600 * 3600) / 60, setSecond - setSecond / 60 * 60);
-            if (total_second == 0)
+            s.set(game);
+            //qDebug()<<s->st->queryBoard(x,y);
+            //qDebug()<<GameState::zobristBoard[255][0]<<endl;
+            int u = s.getNextMove();
+            //qDebug()<<"nextMove:"<<(u-17)/16<<" "<<(u-17)%16;
+            game->checkAndMove(u);
+            if (game->isWin(u))
             {
-                ui->lineEdit_total->setText(timeSet.toString());
+                QMessageBox::information(this, "You lose", "You lose!", QMessageBox::Ok);
+                game->clear();
+                isblack=1;
+                total_second=0;
             }
-            ui->lineEdit_black->setText(timeSet.toString());
-            ui->lineEdit_white->setText(timeSet.toString());
+            else
+            {
 
-            timerId = startTimer(1000); //计时开始,每秒调用一次timerEvent函数，并获得这个定时器的Id
+                killTimer(timerId); //关闭计时器
 
-            isblack = !isblack;
+                //重置显示屏
+                setSecond = const_second;   //储存设置的时间
+
+                timeSet.setHMS(setSecond / 3600, (setSecond - setSecond / 3600 * 3600) / 60, setSecond - setSecond / 60 * 60);
+                if (total_second == 0)
+                {
+                    ui->lineEdit_total->setText(timeSet.toString());
+                }
+                ui->lineEdit_black->setText(timeSet.toString());
+                ui->lineEdit_white->setText(timeSet.toString());
+
+                timerId = startTimer(1000); //计时开始,每秒调用一次timerEvent函数，并获得这个定时器的Id
+
+                isblack = !isblack;
+            }
+            update();
         }
-        update();
     }
 }
 
@@ -169,10 +173,20 @@ void GameWindow::on_timeEdit_userTimeChanged(const QTime &time) //设置时间
 
 void GameWindow::on_Undo_clicked() //暂停按钮的实现
 {
-    if(game->moves.size()>=2)
+    if(ai)
     {
-        game->remove(*(game->moves.rbegin()));
-        game->remove(*(game->moves.rbegin()));
+        if(game->moves.size()>=2)
+        {
+            game->remove(*(game->moves.rbegin()));
+            game->remove(*(game->moves.rbegin()));
+        }
+    }
+    else
+    {
+        if(game->moves.size()>=1)
+        {
+            game->remove(*(game->moves.rbegin()));
+        }
     }
     update();
 }
