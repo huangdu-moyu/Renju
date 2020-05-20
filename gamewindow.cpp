@@ -67,6 +67,7 @@ void GameWindow::paintEvent(QPaintEvent*)
 
 void GameWindow::mouseReleaseEvent(QMouseEvent* e)
 {
+    static Solver s;
     int x=(e->x()+20)/40-1,y=(e->y()+20)/40-1;
     //qDebug()<<x<<" "<<y<<endl;
     if(x<0||x>=15||y<0||y>=15)
@@ -83,11 +84,10 @@ void GameWindow::mouseReleaseEvent(QMouseEvent* e)
             game->clear();
             update();
         }
-
-        Solver* s=new Solver(game);
+        s.set(game);
         //qDebug()<<s->st->queryBoard(x,y);
         //qDebug()<<GameState::zobristBoard[255][0]<<endl;
-        int u=s->getNextMove();
+        int u=s.getNextMove();
         //qDebug()<<"nextMove:"<<(u-17)/16<<" "<<(u-17)%16;
         game->checkAndMove(u);
         if(game->isWin(u))
@@ -97,7 +97,6 @@ void GameWindow::mouseReleaseEvent(QMouseEvent* e)
             update();
         }
         update();
-        delete s;
     }
 }
 

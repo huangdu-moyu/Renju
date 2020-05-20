@@ -34,7 +34,7 @@ void GameState::putStone(int u,int p)
 {
     board[u]=p;
     zobrist^=zobristBoard[u][p];
-    updatePoint(u);
+    updateScore(u);
 }
 
 bool GameState::hasNeighbor(int x, int y, int dis, int count)
@@ -282,6 +282,7 @@ int GameState::scorePoint(int u,int p)
 
 void GameState::initScore()
 {
+    /*
     score[0][0]=score[0][1]=0;
     for(int i=0;i<15;i++)
     {
@@ -307,7 +308,8 @@ void GameState::initScore()
             score[0][0]+=score[t][0];
             score[0][1]+=score[t][1];
         }
-    }
+    }*/
+    memset(score,0,sizeof(score));
 }
 
 void GameState::remove(int t)
@@ -490,10 +492,10 @@ std::vector<int> GameState::genMove(int p)
     {
         return std::vector<int>({transformCorrdinate(7,7)});
     }
-    /*
+
     std::vector<int> fives,comfours,humfours,comblockedfours,
             humblockedfours,comtwothrees,humtwothrees,
-            comthrees,humthrees,comtwos,humtwos,neighbors;*/
+            comthrees,humthrees,comtwos,humtwos,neighbors;
     std::vector<int> res;
     int t=17;
     for(int i=0;i<15;i++,t++)
@@ -514,40 +516,40 @@ std::vector<int> GameState::genMove(int p)
                     continue;
                 }
                 /*
-                if(score[0][p]>=FIVE)
+                if(score[t][p]>=FIVE)
                 {
                     fives.push_back(t);
                     return fives;
                 }
-                if(score[0][p^1]>=FIVE)
+                if(score[t][p^1]>=FIVE)
                 {
                     fives.push_back(t);
                 }
-                else if(score[0][p] >= FOUR) {
+                else if(score[t][p] >= FOUR) {
                             comfours.push_back(t);
-                          } else if(score[0][p^1] >= FOUR) {
+                          } else if(score[t][p^1] >= FOUR) {
               humfours.push_back(t);
-            } else if(score[0][p] >= BLOCKED_FOUR) {
+            } else if(score[t][p] >= BLOCKED_FOUR) {
               comblockedfours.push_back(t);
-            } else if(score[0][p^1] >= BLOCKED_FOUR) {
+            } else if(score[t][p^1] >= BLOCKED_FOUR) {
               humblockedfours.push_back(t);
-            } else if(score[0][p] >= 2*THREE) {
+            } else if(score[t][p] >= 2*THREE) {
               //能成双三也行
               comtwothrees.push_back(t);
-            } else if(score[0][p^1] >= 2*THREE) {
+            } else if(score[t][p^1] >= 2*THREE) {
               humtwothrees.push_back(t);
-            } else if(score[0][p] >= THREE) {
+            } else if(score[t][p] >= THREE) {
               comthrees.push_back(t);
-            } else if(score[0][p^1] >= THREE) {
+            } else if(score[t][p^1] >= THREE) {
               humthrees.push_back(t);
-            } else if(score[0][p] >= TWO) {
+            } else if(score[t][p] >= TWO) {
               comtwos.push_back(t);
-            } else if(score[0][p^1] >= TWO) {
+            } else if(score[t][p^1] >= TWO) {
               humtwos.push_back(t);
             } else neighbors.push_back(t);
             }*/
                 res.push_back(t);
-                tscore[t]=scorePoint(t,p)+scorePoint(t,p^1);
+                tscore[t]=score[t][p]+score[t][p^1];
             }
         }
     }
@@ -574,11 +576,11 @@ std::vector<int> GameState::genMove(int p)
     {
         return tscore[a]>tscore[b];
     });
-    /*
-    if(res.size()>10)
+
+    if(res.size()>8)
     {
-        res.resize(10);
-    }*/
+        res.resize(8);
+    }
 
     return res;
 }

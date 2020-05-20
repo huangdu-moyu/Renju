@@ -40,7 +40,7 @@ void Solver::recordHash(int dep, int val, int bestMove, HashFlag flag)
 
 int Solver::negmax(int dep, int alpha, int beta,int p)
 {
-    //qDebug()<<dep<<" "<<alpha<<" "<<beta<<" "<<p<<" "<<st->zobrist;
+    //qDebug()<<dep<<" "<<alpha<<" "<<beta<<" ";
     int val=probeHash(dep,alpha,beta);
     if(val!=valueUnknown)
     {
@@ -55,14 +55,14 @@ int Solver::negmax(int dep, int alpha, int beta,int p)
     }
     bool foundPV=false;
     std::vector<int> moveList=st->genMove(p);
-    if(dep==2)
+    /*if(dep==4)
     {
         qDebug()<<(p?"黑":"白");
         for(auto u:moveList)
         {
             qDebug()<<(u-17)/16<<" "<<(u-17)%16;
         }
-    }
+    }*/
     int bestmove=0;
     HashFlag hf=HashFlag::alpha;
     for(auto u:moveList)
@@ -75,12 +75,13 @@ int Solver::negmax(int dep, int alpha, int beta,int p)
         }
         else
         {
+
             if(foundPV)
             {
                 val=-negmax(dep-1,-alpha-1,-alpha,p^1);
                 if(val>alpha&&val<beta)
-                {val=-negmax(dep-1,-beta,-alpha,p^1);
-
+                {
+                    val=-negmax(dep-1,-beta,-alpha,p^1);
                 }
             }
             else {
@@ -108,14 +109,29 @@ int Solver::negmax(int dep, int alpha, int beta,int p)
 int Solver::getNextMove()
 {
     //memset(hashTable,0,sizeof(hashTable));
-    qDebug()<<"-------------------------------";
-    negmax(4,-INF,INF,st->player);
+    //qDebug()<<"-------------------------------";
+    double begin=clock();
+    for(int i=2;i<=8;i+=2)
+    {
+        if((clock()-begin)/CLOCKS_PER_SEC>1)
+        {
+            break;
+        }
+        negmax(i,-INF,INF,st->player);
+    }
     return hashTable[st->zobrist&tableMask].bestMove;
+}
+
+Solver::Solver()
+{
+    this->st=nullptr;
+    memset(hashTable,0,sizeof(hashTable));
 }
 
 Solver::Solver(GameState *st)
 {
     this->st=new GameState{*st};
+
     memset(hashTable,0,sizeof(hashTable));
 }
 
@@ -125,4 +141,15 @@ Solver::~Solver()
     {
         delete st;
     }
+}
+
+void Solver::set(GameState *st)
+{
+    if(this->st)
+    {
+        delete this->st;
+    }
+    this->st=new GameState{*st};
+
+    memset(hashTable,0,sizeof(hashTable));
 }
