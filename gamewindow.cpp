@@ -201,6 +201,7 @@ void GameWindow::timerEvent(QTimerEvent *)
             QMessageBox::information(this, "提示", "超时！");
             killTimer(timerId); //时间到,关闭计时器
             isblack=1;
+            total_second=0;
             game->clear();
             update();
         }
