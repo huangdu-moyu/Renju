@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QString>
 #include <QTimerEvent>
-GameWindow::GameWindow(bool ai,QWidget *parent) : ai(ai),QWidget(parent),
+GameWindow::GameWindow(bool ai,QWidget *parent) : QWidget(parent),ai(ai),
                                           ui(new Ui::GameWindow)
 {
     //this->setFixedSize(940,640);
@@ -227,4 +227,10 @@ void GameWindow::on_restart_clicked()
     isblack=1;
     total_second=0;
     update();
+}
+
+void GameWindow::on_restart_2_clicked()
+{
+    emit sendsignal();
+    this->close();
 }

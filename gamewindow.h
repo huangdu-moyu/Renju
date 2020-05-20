@@ -26,6 +26,8 @@ private slots:
     void on_restart_clicked();
 
     void on_Undo_clicked();
+    void on_restart_2_clicked();
+
 public:
     explicit GameWindow(bool ai,QWidget *parent = nullptr);
     ~GameWindow();
@@ -48,6 +50,9 @@ private:
         bool hasSetTime;
         bool hasStart;
         bool isblack;
+
+signals:
+        void sendsignal();
 };
 
 #endif // GAMEWINDOW_H
