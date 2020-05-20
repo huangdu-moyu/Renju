@@ -22,6 +22,12 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="text">
+    <string>0:00:30</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_white">
    <property name="geometry">
@@ -32,11 +38,17 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="text">
+    <string>0:00:30</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
   </widget>
   <widget class="QTimeEdit" name="timeEdit">
    <property name="geometry">
     <rect>
-     <x>847</x>
+     <x>787</x>
      <y>470</y>
      <width>91</width>
      <height>41</height>
@@ -52,14 +64,14 @@
     <time>
      <hour>0</hour>
      <minute>0</minute>
-     <second>0</second>
+     <second>30</second>
     </time>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>730</x>
+     <x>670</x>
      <y>470</y>
      <width>111</width>
      <height>41</height>
@@ -69,7 +81,7 @@
     <string>请设置落子限时</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnStop">
+  <widget class="QPushButton" name="Undo">
    <property name="geometry">
     <rect>
      <x>800</x>
@@ -79,7 +91,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>暂停游戏</string>
+    <string>悔棋</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -118,7 +130,10 @@
     </rect>
    </property>
    <property name="text">
-    <string/>
+    <string>0:00:00</string>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -132,6 +147,19 @@
    </property>
    <property name="text">
     <string>总共用时</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="restart">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>550</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>重新开始</string>
    </property>
   </widget>
  </widget>

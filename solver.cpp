@@ -88,7 +88,7 @@ int Solver::negmax(int dep, int alpha, int beta,int p)
                 val=-negmax(dep-1,-beta,-alpha,p^1);
             }
         }
-        st->remove(u);
+        st->removeStone(u);
         if(val>=beta)
         {
             recordHash(dep,val,u,HashFlag::beta);

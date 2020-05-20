@@ -20,8 +20,8 @@ GameWindow::GameWindow(QWidget *parent) : QWidget(parent),
     total_second = 0;
     hasSetTime = false;
     hasStart = false;
-    isStop = false;
     isblack = true;
+    const_second=30;
 }
 
 void GameWindow::paintEvent(QPaintEvent *)
@@ -90,6 +90,8 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
         {
             QMessageBox::information(this, "You win", "You win!", QMessageBox::Ok);
             game->clear();
+            isblack=1;
+            total_second=0;
             update();
         }
         else
@@ -123,6 +125,8 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
         {
             QMessageBox::information(this, "You lose", "You lose!", QMessageBox::Ok);
             game->clear();
+            isblack=1;
+            total_second=0;
         }
         else
         {
@@ -163,18 +167,19 @@ void GameWindow::on_timeEdit_userTimeChanged(const QTime &time) //设置时间
     hasSetTime = true;
 }
 
-void GameWindow::on_btnStop_clicked() //暂停按钮的实现
+void GameWindow::on_Undo_clicked() //暂停按钮的实现
 {
-    isStop = true;
+    if(game->moves.size()>=2)
+    {
+        game->remove(*(game->moves.rbegin()));
+        game->remove(*(game->moves.rbegin()));
+    }
+    update();
 }
 
 void GameWindow::timerEvent(QTimerEvent *)
 {
-    if (isStop)
-    {
-    }
-    else
-    {
+
 
         setSecond -= 1;
 
@@ -195,8 +200,16 @@ void GameWindow::timerEvent(QTimerEvent *)
         {
             QMessageBox::information(this, "提示", "超时！");
             killTimer(timerId); //时间到,关闭计时器
+            isblack=1;
             game->clear();
             update();
         }
-    }
+}
+
+void GameWindow::on_restart_clicked()
+{
+    game->clear();
+    isblack=1;
+    total_second=0;
+    update();
 }

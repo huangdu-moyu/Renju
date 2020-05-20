@@ -312,7 +312,7 @@ void GameState::initScore()
     memset(score,0,sizeof(score));
 }
 
-void GameState::remove(int t)
+void GameState::removeStone(int t)
 {
     zobrist^=zobristBoard[t][board[t]];
     board[t]=-1;
@@ -333,6 +333,7 @@ void GameState::clear()
     zobrist=0;
     player=1;
     num=0;
+    moves.clear();
     initScore();
 }
 
@@ -362,19 +363,20 @@ bool GameState::checkAndMove(int t)
     putStone(t,player);
     player^=1;
     num++;
+    moves.push_back(t);
     return true;
 }
 
-bool GameState::remove(int x,int y)
+bool GameState::remove(int t)
 {
-    int t=transformCorrdinate(x,y);
-    if(board[t]==-1)
+    if(board[t]!=-1)
     {
-        return false;
+        removeStone(t);
+
+        moves.pop_back();
+        return true;
     }
-    zobrist^=zobristBoard[t][board[t]];
-    board[t]=-1;
-    return true;
+    return false;
 }
 
 bool GameState::isWin(int x, int y)

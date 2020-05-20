@@ -22,8 +22,10 @@ class GameWindow : public QWidget
 private slots:
 
     void on_timeEdit_userTimeChanged(const QTime &time);
-    void on_btnStop_clicked();
 
+    void on_restart_clicked();
+
+    void on_Undo_clicked();
 public:
     explicit GameWindow(QWidget *parent = nullptr);
     ~GameWindow();
@@ -44,7 +46,6 @@ private:
         int total_second;
         bool hasSetTime;
         bool hasStart;
-        bool isStop;
         bool isblack;
 };
 

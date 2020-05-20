@@ -27,8 +27,7 @@ private:
     ull zobrist;
     void putStone(int u,int p);
     void initScore();
-    void remove(int u);
-    //std::vector<pii> moves;
+    void removeStone(int u);
 
 
     bool hasNeighbor(int i, int j, int dis, int count);
@@ -36,6 +35,8 @@ private:
     void updateScore(int u);
     void updatePoint(int t);
 public:
+    std::vector<int> moves;
+
     void clear();
     int queryBoard(int x,int y);
     int queryPlayer();
@@ -46,13 +47,14 @@ public:
         return x*16+y+17;
     }
     GameState();
-    bool remove(int x, int y);
+    bool removeStone(int x, int y);
     friend Solver;
     int evaluate(int p);
     bool checkAndMove(int t);
     std::vector<int> genMove(int p);
     bool isWin(int cur);
     int num;
+    bool remove(int t);
 };
 
 #endif // GAME_H
