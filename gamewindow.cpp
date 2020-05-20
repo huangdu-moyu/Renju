@@ -98,7 +98,9 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
             killTimer(timerId); //关闭计时器
 
             //重置显示屏
-            timeSet.setHMS(0, 0, 0);
+            setSecond = const_second;   //储存设置的时间
+
+            timeSet.setHMS(setSecond / 3600, (setSecond - setSecond / 3600 * 3600) / 60, setSecond - setSecond / 60 * 60);
             if (total_second == 0)
             {
                 ui->lineEdit_total->setText(timeSet.toString());
@@ -128,7 +130,9 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
             killTimer(timerId); //关闭计时器
 
             //重置显示屏
-            timeSet.setHMS(0, 0, 0);
+            setSecond = const_second;   //储存设置的时间
+
+            timeSet.setHMS(setSecond / 3600, (setSecond - setSecond / 3600 * 3600) / 60, setSecond - setSecond / 60 * 60);
             if (total_second == 0)
             {
                 ui->lineEdit_total->setText(timeSet.toString());
@@ -136,7 +140,6 @@ void GameWindow::mouseReleaseEvent(QMouseEvent *e)
             ui->lineEdit_black->setText(timeSet.toString());
             ui->lineEdit_white->setText(timeSet.toString());
 
-            setSecond = const_second;   //储存设置的时间
             timerId = startTimer(1000); //计时开始,每秒调用一次timerEvent函数，并获得这个定时器的Id
 
             isblack = !isblack;
@@ -190,9 +193,10 @@ void GameWindow::timerEvent(QTimerEvent *)
 
         if (setSecond == 0)
         {
-
-            QMessageBox::information(this, "提示", "时间到");
+            QMessageBox::information(this, "提示", "超时！");
             killTimer(timerId); //时间到,关闭计时器
+            game->clear();
+            update();
         }
     }
 }
